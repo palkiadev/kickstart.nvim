@@ -12,6 +12,8 @@ do
   vim.g.mapleader = ' '
   vim.g.maplocalleader = ' '
 
+  vim.keymap.set('n', '<leader>w', '<cmd>w<CR>', { desc = 'Write current buffer' })
+
   -- Set to true if you have a Nerd Font installed and selected in the terminal
   vim.g.have_nerd_font = true
 
@@ -22,6 +24,7 @@ do
 
   -- Make line numbers default
   vim.o.number = true
+  vim.o.winborder = "rounded"
   -- You can also add relative line numbers, to help with jumping.
   --  Experiment for yourself to see if you like it!
   -- vim.o.relativenumber = true
@@ -420,12 +423,13 @@ do
   vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
   vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
   vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+  vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = '[S]earch [B]uffers' })
   vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
   vim.keymap.set({ 'n', 'v' }, '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
   vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
   vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
   vim.keymap.set('n', '<leader>se', function()
-    require('telescope.builtin').diagnostics({ severity = vim.diagnostic.severity.ERROR })
+    builtin.diagnostics({ severity = vim.diagnostic.severity.ERROR })
   end, { desc = '[S]earch [E]rrors' })
   vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
   vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
@@ -699,7 +703,8 @@ do
     format_on_save = function(bufnr)
       -- You can specify filetypes to autoformat on save here:
       local enabled_filetypes = {
-        rust = true
+        rust = true,
+        dart = true,
         -- lua = true,
         -- python = true,
       }
@@ -895,23 +900,4 @@ do
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   require 'custom.plugins'
 end
-
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
---
-vim.keymap.set('n', '<leader>cr', function()
-  vim.cmd('silent! update')
-  
-  -- Check if a terminal buffer is already open and close it first
-  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.bo[buf].buftype == 'terminal' then
-      vim.api.nvim_buf_delete(buf, { force = true })
-    end
-  end
-
-  -- Open a fresh terminal and run cargo
-  vim.cmd('vsplit | term cargo run')
-  vim.cmd('vertical resize 80')
-  vim.cmd('startinsert')
-end, { desc = '[C]argo [R]un' })
 
