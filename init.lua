@@ -400,17 +400,19 @@ do
 
   -- See `:help telescope` and `:help telescope.setup()`
   require('telescope').setup {
-    defaults = {
-      file_ignore_patterns = { "%.git/" },
-    },
+    -- You can remove file_ignore_patterns entirely if you use the globs below
+    defaults = {}, 
 
     pickers = {
       find_files = {
         hidden = true,
+        -- Tells `fd` (the default for find_files) to ignore .git
+        find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
       },
       live_grep = {
         additional_args = function(_)
-          return { "--hidden" }
+          -- Tells `rg` to search hidden files, but ignore .git
+          return { "--hidden", "--glob", "!**/.git/*" }
         end,
       },
     },
