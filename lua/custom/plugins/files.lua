@@ -2,6 +2,9 @@ vim.pack.add { 'https://github.com/stevearc/oil.nvim' }
 
 require('oil').setup({
   skip_confirm_for_simple_edits = true,
+  view_options = {
+    show_hidden = true,
+  },
   keymaps = {
     ["<leader>to"] = {
       desc = "Open terminal in current dir (vsplit)",
