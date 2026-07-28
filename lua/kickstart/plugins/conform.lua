@@ -9,7 +9,7 @@ require('conform').setup {
     local enabled_filetypes = {
       rust = true,
       dart = true,
-      -- lua = true,
+      lua = true,
       -- python = true,
     }
     if enabled_filetypes[vim.bo[bufnr].filetype] then
@@ -33,4 +33,3 @@ require('conform').setup {
 }
 
 vim.keymap.set({ 'n', 'v' }, '<leader>f', function() require('conform').format { async = true } end, { desc = '[F]ormat buffer' })
-

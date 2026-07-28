@@ -4,6 +4,8 @@ local gh = require('utils').gh
 --  A collection of various small independent plugins/modules
 vim.pack.add { gh 'nvim-mini/mini.nvim' }
 
+if vim.g.have_nerd_font then require('mini.icons').setup() end
+
 -- Better Around/Inside textobjects
 --
 -- Examples:
@@ -41,4 +43,3 @@ statusline.section_location = function() return '%2l:%-2v' end
 
 -- ... and there is more!
 --  Check out: https://github.com/nvim-mini/mini.nvim
-
