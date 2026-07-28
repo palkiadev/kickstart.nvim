@@ -1,8 +1,11 @@
--- Adds git related signs to the gutter, as well as utilities for managing changes
--- NOTE: gitsigns is already included in init.lua but contains only the base
--- config. This will add also the recommended keymaps.
+local gh = require('utils').gh
 
-vim.pack.add { 'https://github.com/lewis6991/gitsigns.nvim' }
+local gitplugins = {
+  gh 'tpope/vim-fugitive.git',
+  gh 'lewis6991/gitsigns.nvim'
+}
+
+vim.pack.add(gitplugins)
 
 require('gitsigns').setup {
   on_attach = function(bufnr)
