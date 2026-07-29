@@ -7,6 +7,8 @@ do
   if vim.g.have_nerd_font then require('mini.icons').setup() end
 end
 
+require('mini.indentscope').setup()
+
 -- Show next key clues
 do
   local miniclue = require 'mini.clue'

@@ -3,8 +3,17 @@ local gh = require('utils').gh
 local themes = {
   gh 'folke/tokyonight.nvim',
   gh 'rebelot/kanagawa.nvim',
+  gh 'sainnhe/everforest',
+  gh 'sainnhe/sonokai',
+  gh 'sainnhe/gruvbox-material',
 }
--- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+
 vim.pack.add(themes)
 
-vim.cmd.colorscheme 'tokyonight-night'
+vim.g.everforest_background = 'hard'
+vim.g.everforest_enable_italic = true
+vim.g.gruvbox_material_background = 'medium'
+vim.g.gruvbox_material_foreground = 'material'
+vim.g.gruvbox_material_enable_italic = true
+
+vim.cmd.colorscheme 'gruvbox-material'
