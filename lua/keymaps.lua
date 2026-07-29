@@ -74,11 +74,11 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- Split terminal
 vim.keymap.set('n', '<leader>th', function()
-    vim.cmd('15split | term')
-    vim.cmd('startinsert')
-end, { desc = 'Open horizontal terminal' })
+  vim.cmd '15split | term'
+  vim.cmd 'startinsert'
+end, { desc = '[T]oggle terminal split horizontal' })
 
 vim.keymap.set('n', '<leader>tv', function()
-    vim.cmd('80vsplit | term')
-    vim.cmd('startinsert')
-end, { desc = 'Open vertical terminal' })
+  vim.cmd '80vsplit | term'
+  vim.cmd 'startinsert'
+end, { desc = '[T]oggle terminal split vertical' })
