@@ -1,10 +1,49 @@
 local gh = require('utils').gh
 
--- [[ mini.nvim ]]
---  A collection of various small independent plugins/modules
 vim.pack.add { gh 'nvim-mini/mini.nvim' }
 
-if vim.g.have_nerd_font then require('mini.icons').setup() end
+-- Icons
+do
+  if vim.g.have_nerd_font then require('mini.icons').setup() end
+end
+
+-- Show next key clues
+do
+  local miniclue = require 'mini.clue'
+  miniclue.setup {
+    triggers = {
+      -- Leader triggers
+      { mode = { 'n', 'x' }, keys = '<Leader>' },
+      -- `[` and `]` keys
+      { mode = 'n', keys = '[' },
+      { mode = 'n', keys = ']' },
+      -- Built-in completion
+      { mode = 'i', keys = '<C-x>' },
+      -- `g` key
+      { mode = { 'n', 'x' }, keys = 'g' },
+      -- Marks
+      { mode = { 'n', 'x' }, keys = "'" },
+      { mode = { 'n', 'x' }, keys = '`' },
+      -- Registers
+      { mode = { 'n', 'x' }, keys = '"' },
+      { mode = { 'i', 'c' }, keys = '<C-r>' },
+      -- Window commands
+      { mode = 'n', keys = '<C-w>' },
+      -- Other keys
+      { mode = { 'n', 'x' }, keys = 'z' },
+    },
+
+    clues = {
+      miniclue.gen_clues.square_brackets(),
+      miniclue.gen_clues.builtin_completion(),
+      miniclue.gen_clues.g(),
+      miniclue.gen_clues.marks(),
+      miniclue.gen_clues.registers(),
+      miniclue.gen_clues.windows(),
+      miniclue.gen_clues.z(),
+    },
+  }
+end
 
 -- Better Around/Inside textobjects
 --
@@ -12,34 +51,47 @@ if vim.g.have_nerd_font then require('mini.icons').setup() end
 --  - va)  - [V]isually select [A]round [)]paren
 --  - yiiq - [Y]ank [I]nside [I]+1 [Q]uote
 --  - ci'  - [C]hange [I]nside [']quote
-require('mini.ai').setup {
-  -- NOTE: Avoid conflicts with the built-in incremental selection mappings on Neovim>=0.12 (see `:help treesitter-incremental-selection`)
-  mappings = {
-    around_next = 'aa',
-    inside_next = 'ii',
-  },
-  n_lines = 500,
-}
+do
+  require('mini.ai').setup {
+    -- NOTE: Avoid conflicts with the built-in incremental selection mappings on Neovim>=0.12 (see `:help treesitter-incremental-selection`)
+    mappings = {
+      around_next = 'aa',
+      inside_next = 'ii',
+    },
+    n_lines = 500,
+  }
+end
 
 -- Add/delete/replace surroundings (brackets, quotes, etc.)
 --
 -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
 -- - sd'   - [S]urround [D]elete [']quotes
 -- - sr)'  - [S]urround [R]eplace [)] [']
-require('mini.surround').setup()
+do
+  require('mini.surround').setup()
+end
 
 -- Simple and easy statusline.
---  You could remove this setup call if you don't like it,
---  and try some other statusline plugin
-local statusline = require 'mini.statusline'
--- Set `use_icons` to true if you have a Nerd Font
-statusline.setup { use_icons = vim.g.have_nerd_font }
+do
+  local statusline = require 'mini.statusline'
+  statusline.setup { use_icons = vim.g.have_nerd_font }
+  ---@diagnostic disable-next-line: duplicate-set-field
+  statusline.section_location = function() return '%2l:%-2v' end
+end
 
--- You can configure sections in the statusline by overriding their
--- default behavior. For example, here we set the section for
--- cursor location to LINE:COLUMN
----@diagnostic disable-next-line: duplicate-set-field
-statusline.section_location = function() return '%2l:%-2v' end
+-- Highlight patterns in text
+do
+  local hipatterns = require 'mini.hipatterns'
+  hipatterns.setup {
+    highlighters = {
+      -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
+      fixme = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
+      hack = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
+      todo = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
+      note = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
 
--- ... and there is more!
---  Check out: https://github.com/nvim-mini/mini.nvim
+      -- Highlight hex color strings (`#rrggbb`) using that color
+      hex_color = hipatterns.gen_highlighter.hex_color(),
+    },
+  }
+end
