@@ -1,31 +1,8 @@
 local gh = require('utils').gh
 
--- [[ Fuzzy Finder (files, lsp, etc) ]]
---
--- Fzf-lua is a fuzzy finder that comes with a lot of different things that
--- it can fuzzy find! It's more than just a "file finder", it can search
--- many different aspects of Neovim, your workspace, LSP, and more!
---
--- The easiest way to use fzf-lua, is to start by doing something like:
---  :FzfLua help_tags
---
--- After running this command, a window will open up and you're able to
--- type in the prompt window. You'll see a list of options and
--- a corresponding preview of the help.
---
--- Fzf-lua maps normal `fzf` keys, typically:
---  - <Tab> to multi-select
---  - <C-g> to toggle preview window
---  - <C-c> or <Esc> to exit
-
----@type (string|vim.pack.Spec)[]
-local fzf_plugins = {
+vim.pack.add {
   gh 'ibhagwan/fzf-lua',
-  gh 'nvim-tree/nvim-web-devicons', -- optional but recommended for icons
 }
-
--- NOTE: You can install multiple plugins at once
-vim.pack.add(fzf_plugins)
 
 local fzf = require 'fzf-lua'
 
@@ -78,26 +55,26 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
--- Override default behavior and theme when searching lines in the current buffer
-vim.keymap.set('n', '<leader>/', function()
-  -- Fzf-lua's `blines` acts similarly to `current_buffer_fuzzy_find`.
-  -- Custom winopts here emulate Telescope's dropdown theme.
-  fzf.blines {
-    winopts = {
-      height = 0.33,
-      width = 0.66,
-      row = 0.33,
-      preview = { hidden = 'hidden' },
-    },
-  }
-end, { desc = '[/] Fuzzily search in current buffer' })
-
--- Live Grep in Open Files
-vim.keymap.set('n', '<leader>s/', function()
-  fzf.lgrep_buffers {
-    prompt = 'Live Grep (Open Files)> ',
-  }
-end, { desc = '[S]earch [/] in Open Files' })
-
+-- -- Override default behavior and theme when searching lines in the current buffer
+-- vim.keymap.set('n', '<leader>/', function()
+--   -- Fzf-lua's `blines` acts similarly to `current_buffer_fuzzy_find`.
+--   -- Custom winopts here emulate Telescope's dropdown theme.
+--   fzf.blines {
+--     winopts = {
+--       height = 0.33,
+--       width = 0.66,
+--       row = 0.33,
+--       preview = { hidden = 'hidden' },
+--     },
+--   }
+-- end, { desc = '[/] Fuzzily search in current buffer' })
+--
+-- -- Live Grep in Open Files
+-- vim.keymap.set('n', '<leader>s/', function()
+--   fzf.lgrep_buffers {
+--     prompt = 'Live Grep (Open Files)> ',
+--   }
+-- end, { desc = '[S]earch [/] in Open Files' })
+--
 -- Shortcut for searching your Neovim configuration files
 vim.keymap.set('n', '<leader>sn', function() fzf.files { cwd = vim.fn.stdpath 'config' } end, { desc = '[S]earch [N]eovim files' })
