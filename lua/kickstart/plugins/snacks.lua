@@ -1,39 +1,38 @@
 local gh = require('utils').gh
 
--- [[ Fuzzy Finder (files, lsp, etc) ]]
---
--- We are now using snacks.picker! It's an incredibly fast, feature-rich fuzzy finder
--- built directly into snacks.nvim. It natively supports everything Telescope did
--- (files, grep, lsp, ui-select) but without requiring external dependencies like plenary.
+vim.pack.add { gh 'folke/snacks.nvim' }
 
----@type (string|vim.pack.Spec)[]
-local snacks_plugins = {
-  gh 'folke/snacks.nvim',
-}
-
--- NOTE: You can install multiple plugins at once
-vim.pack.add(snacks_plugins)
-
--- Setup snacks.nvim and enable the picker
 require('snacks').setup {
   picker = {
     enabled = true,
-    ui_select = true, -- This replaces telescope-ui-select.nvim
+    ui_select = true,
     sources = {
       files = {
         hidden = true,
-        -- snacks.picker ignores .git by default, but you can explicitly ensure it here
         exclude = { '.git' },
       },
       grep = {
         hidden = true,
         exclude = { '.git' },
       },
+      buffers = {
+        win = {
+          input = {
+            keys = {
+              ['<c-d>'] = { 'bufdelete', mode = { 'n', 'i' }, desc = 'Delete Buffer' },
+            },
+          },
+          list = {
+            keys = {
+              ['<c-d>'] = { 'bufdelete', mode = { 'n', 'i' }, desc = 'Delete Buffer' },
+            },
+          },
+        },
+      },
     },
   },
 }
 
--- Keymaps
 vim.keymap.set('n', '<leader>sh', function() Snacks.picker.help() end, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sk', function() Snacks.picker.keymaps() end, { desc = '[S]earch [K]eymaps' })
 vim.keymap.set('n', '<leader>sf', function() Snacks.picker.files() end, { desc = '[S]earch [F]iles' })
