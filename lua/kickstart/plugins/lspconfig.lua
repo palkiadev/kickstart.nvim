@@ -106,15 +106,15 @@ local servers = {
   -- clangd = {},
   -- gopls = {},
   -- pyright = {},
-  rust_analyzer = {
-    settings = {
-      ['rust-analyzer'] = {
-        check = {
-          command = "clippy",
-        },
-      },
-    },
-  },
+  -- rust_analyzer = {
+  --   settings = {
+  --     ['rust-analyzer'] = {
+  --       check = {
+  --         command = "clippy",
+  --       },
+  --     },
+  --   },
+  -- },
 
   stylua = {},
 
@@ -132,7 +132,7 @@ vim.pack.add {
   gh 'mason-org/mason.nvim',
   gh 'mason-org/mason-lspconfig.nvim',
   gh 'WhoIsSethDaniel/mason-tool-installer.nvim',
-  gh 'folke/lazydev.nvim'
+  gh 'folke/lazydev.nvim',
 }
 
 require('lazydev').setup {}
@@ -158,4 +158,3 @@ for name, server in pairs(servers) do
   vim.lsp.config(name, server)
   vim.lsp.enable(name)
 end
-
