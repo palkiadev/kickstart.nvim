@@ -82,3 +82,19 @@ vim.keymap.set('n', '<leader>tv', function()
   vim.cmd '80vsplit | term'
   vim.cmd 'startinsert'
 end, { desc = '[T]oggle terminal split vertical' })
+
+local function reload_colorscheme()
+  local theme_name = 'solarized'
+
+  for k in pairs(package.loaded) do
+    if k:match('^' .. theme_name) then package.loaded[k] = nil end
+  end
+
+  if vim.g.colors_name then vim.cmd 'hi clear' end
+
+  vim.cmd('colorscheme ' .. theme_name)
+
+  print('Reloaded ' .. theme_name .. '!')
+end
+
+vim.keymap.set('n', '<leader>rc', reload_colorscheme, { desc = 'Reload Colorscheme' })
